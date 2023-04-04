@@ -4,30 +4,30 @@
     <div class="tip-calculator">
       <div class="tip-calculator__functional">
         <h1 class="tip-calculator__tittle">Bill</h1>
-        <input class="tip-calculator__input" />
+        <input class="tip-calculator__input" placeholder="0" v-model="bill" />
         <h2 class="tip-calculator__tittle">Select Tip %</h2>
         <div class="tip-calculator__tip-selector">
-          <div class="tip-calculator__tip-percent">
+          <div class="tip-calculator__tip-percent" @click="tipSelected=5" :class="selectTipPercent(5)">
             5%
           </div>
-          <div class="tip-calculator__tip-percent">
+          <div class="tip-calculator__tip-percent" @click="tipSelected=10" :class="selectTipPercent(10)">
             10%
           </div>
-          <div class="tip-calculator__tip-percent">
+          <div class="tip-calculator__tip-percent" @click="tipSelected=15" :class="selectTipPercent(15)">
             15%
           </div>
-          <div class="tip-calculator__tip-percent">
+          <div class="tip-calculator__tip-percent" @click="tipSelected=25" :class="selectTipPercent(25)">
             25%
           </div>
-          <div class="tip-calculator__tip-percent">
+          <div class="tip-calculator__tip-percent" @click="tipSelected=50" :class="selectTipPercent(50)">
             50%
           </div>
           <!-- <div class="tip-calculator__tip-percent"> -->
-            <input class="tip-calculator__tip-value" placeholder="Custom" />
+          <input class="tip-calculator__tip-value" placeholder="Custom">
           <!-- </div> -->
         </div>
         <h3 class="tip-calculator__tittle">Number of People</h3>
-        <input class="tip-calculator__input" />
+        <input class="tip-calculator__input" placeholder="0" v-model="numberPeople" />
       </div>
       <div class="tip-calculator__visual">
         <div class="tip-calculator__display">
@@ -40,7 +40,7 @@
             </div>
           </div>
           <div class="tip-calculator__total">
-            $4.27
+            ${{ tip }}
           </div>
         </div>
         <div class="tip-calculator__display">
@@ -53,7 +53,7 @@
             </div>
           </div>
           <div class="tip-calculator__total">
-            $32.79
+            ${{ total }}
           </div>
         </div>
         <button class="tip-calculator__button">
@@ -66,9 +66,38 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      bill: '',
+      tipSelected: 0,
+      numberPeople: ''
+    }
+  },
+  computed: {
+    tip(){
+      if (this.bill > 0 && this.numberPeople > 0 && this.tipSelected)
+        return ((this.bill * (this.tipSelected/100))/this.numberPeople).toFixed(2)
+      else
+        return '0.00'
+
+    },
+    total() {
+      if (this.bill > 0 && this.numberPeople > 0 && this.tipSelected)
+        return ((this.bill / this.numberPeople) + ((this.bill * (this.tipSelected/100))/this.numberPeople)).toFixed(2)
+      else
+        return '0.00'
+    }
+  },
+  methods:{
+   
+    selectTipPercent(percent){
+      window.console.log(percent)
+      window.console.log(this.tipSelected)
+      if(percent == this.tipSelected) return "tip-calculator__tip-percent--selected"
+    }
   }
 }
 </script>
@@ -76,21 +105,21 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
 
-body{
+body {
   background-color: hsl(185, 41%, 84%);
   font-family: "Space Mono";
 }
 
-main{
- text-align: center;
- 
+main {
+  text-align: center;
+
 }
 
-input{
+input {
   font-family: "Space Mono";
 }
 
-.tip-calculator{
+.tip-calculator {
   text-align: start;
   display: flex;
   padding: 1.5rem;
@@ -101,13 +130,16 @@ input{
   box-sizing: border-box;
 }
 
-.tip-calculator__functional{
+.tip-calculator__functional {
   width: 50%;
   padding-right: 1.5rem;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.tip-calculator__visual{
+.tip-calculator__visual {
   background-color: hsl(183, 100%, 15%);
   box-sizing: border-box;
   width: 50%;
@@ -115,29 +147,31 @@ input{
   border-radius: 1rem;
 }
 
-.tip-calculator__tittle{
+.tip-calculator__tittle {
   font-size: 16px;
   margin: 0;
   color: hsl(186, 14%, 43%);
 }
 
-.tip-calculator__input{
+.tip-calculator__input {
   width: 100%;
   border: none;
   background-color: hsl(189, 41%, 97%);
   outline: none;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: bold;
   padding: 0.5rem;
   text-align: end;
+  color: hsl(183, 100%, 15%);
 }
 
-.tip-calculator__tip-selector{
+.tip-calculator__tip-selector {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
 }
 
-.tip-calculator__tip-percent{
+.tip-calculator__tip-percent {
   text-align: center;
   width: 5rem;
   color: white;
@@ -148,7 +182,12 @@ input{
   font-weight: bold;
 }
 
-.tip-calculator__tip-value{
+.tip-calculator__tip-percent--selected{
+  color: hsl(183, 100%, 15%);
+  background-color: hsl(172, 67%, 45%);
+}
+
+.tip-calculator__tip-value {
   text-align: center;
   width: 5rem;
   font-weight: bold;
@@ -160,42 +199,42 @@ input{
   border-radius: 0.5rem;
 }
 
-.tip-calculator__visual{
+.tip-calculator__visual {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.tip-calculator__display{
+
+.tip-calculator__display {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.tip-calculator__text-title{
+.tip-calculator__text-title {
   color: white;
   font-weight: bold;
 }
 
-.tip-calculator__text-sub-title{
+.tip-calculator__text-sub-title {
   color: hsl(186, 14%, 43%);
   font-size: 12px;
   font-weight: bold;
 }
 
-.tip-calculator__total{
+.tip-calculator__total {
   font-size: 24px;
   font-weight: bold;
-  color:hsl(172, 67%, 45%)
+  color: hsl(172, 67%, 45%)
 }
 
-.tip-calculator__button{
+.tip-calculator__button {
   width: 100%;
   border: 0;
-  background-color:hsl(172, 67%, 45%);
+  background-color: hsl(172, 67%, 45%);
   border-radius: 0.5rem;
   padding: 0.5rem;
   color: hsl(183, 100%, 15%);
   font-weight: bold;
 }
-
 </style>
