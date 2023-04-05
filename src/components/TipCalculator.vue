@@ -1,67 +1,65 @@
 <template>
-  <main>
-    <img src="../images/logo.svg" alt="Website logo" />
-    <div class="tip-calculator">
-      <div class="tip-calculator__functional">
-        <h1 class="tip-calculator__tittle">Bill</h1>
-        <input class="tip-calculator__input" placeholder="0" v-model="bill" />
-        <h2 class="tip-calculator__tittle">Select Tip %</h2>
-        <div class="tip-calculator__tip-selector">
-          <div class="tip-calculator__tip-percent" @click="tipSelected=5" :class="selectTipPercent(5)">
-            5%
-          </div>
-          <div class="tip-calculator__tip-percent" @click="tipSelected=10" :class="selectTipPercent(10)">
-            10%
-          </div>
-          <div class="tip-calculator__tip-percent" @click="tipSelected=15" :class="selectTipPercent(15)">
-            15%
-          </div>
-          <div class="tip-calculator__tip-percent" @click="tipSelected=25" :class="selectTipPercent(25)">
-            25%
-          </div>
-          <div class="tip-calculator__tip-percent" @click="tipSelected=50" :class="selectTipPercent(50)">
-            50%
-          </div>
-          <!-- <div class="tip-calculator__tip-percent"> -->
-          <input class="tip-calculator__tip-value" placeholder="Custom">
-          <!-- </div> -->
+  <img src="../images/logo.svg" alt="Website logo" />
+  <div class="tip-calculator">
+    <div class="tip-calculator__functional">
+      <h1 class="tip-calculator__tittle">Bill</h1>
+      <input class="tip-calculator__input" placeholder="0" v-model="bill" />
+      <h2 class="tip-calculator__tittle">Select Tip %</h2>
+      <div class="tip-calculator__tip-selector">
+        <div class="tip-calculator__tip-percent" @click="tipSelected = 5" :class="selectTipPercent(5)">
+          5%
         </div>
-        <h3 class="tip-calculator__tittle">Number of People</h3>
-        <input class="tip-calculator__input" placeholder="0" v-model="numberPeople" />
+        <div class="tip-calculator__tip-percent" @click="tipSelected = 10" :class="selectTipPercent(10)">
+          10%
+        </div>
+        <div class="tip-calculator__tip-percent" @click="tipSelected = 15" :class="selectTipPercent(15)">
+          15%
+        </div>
+        <div class="tip-calculator__tip-percent" @click="tipSelected = 25" :class="selectTipPercent(25)">
+          25%
+        </div>
+        <div class="tip-calculator__tip-percent" @click="tipSelected = 50" :class="selectTipPercent(50)">
+          50%
+        </div>
+        <!-- <div class="tip-calculator__tip-percent"> -->
+        <input class="tip-calculator__tip-value" placeholder="Custom">
+        <!-- </div> -->
       </div>
-      <div class="tip-calculator__visual">
-        <div class="tip-calculator__display">
-          <div class="tip-calculator__display-text">
-            <div class="tip-calculator__text-title">
-              Tip Amount
-            </div>
-            <div class="tip-calculator__text-sub-title">
-              / person
-            </div>
-          </div>
-          <div class="tip-calculator__total">
-            ${{ tip }}
-          </div>
-        </div>
-        <div class="tip-calculator__display">
-          <div class="tip-calculator__display-text">
-            <div class="tip-calculator__text-title">
-              Total
-            </div>
-            <div class="tip-calculator__text-sub-title">
-              / person
-            </div>
-          </div>
-          <div class="tip-calculator__total">
-            ${{ total }}
-          </div>
-        </div>
-        <button class="tip-calculator__button">
-          Reset
-        </button>
-      </div>
+      <h3 class="tip-calculator__tittle">Number of People</h3>
+      <input class="tip-calculator__input" placeholder="0" v-model="numberPeople" />
     </div>
-  </main>
+    <div class="tip-calculator__visual">
+      <div class="tip-calculator__display">
+        <div class="tip-calculator__display-text">
+          <div class="tip-calculator__text-title">
+            Tip Amount
+          </div>
+          <div class="tip-calculator__text-sub-title">
+            / person
+          </div>
+        </div>
+        <div class="tip-calculator__total">
+          ${{ tip }}
+        </div>
+      </div>
+      <div class="tip-calculator__display">
+        <div class="tip-calculator__display-text">
+          <div class="tip-calculator__text-title">
+            Total
+          </div>
+          <div class="tip-calculator__text-sub-title">
+            / person
+          </div>
+        </div>
+        <div class="tip-calculator__total">
+          ${{ total }}
+        </div>
+      </div>
+      <button class="tip-calculator__button">
+        Reset
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -77,26 +75,23 @@ export default {
     }
   },
   computed: {
-    tip(){
+    tip() {
       if (this.bill > 0 && this.numberPeople > 0 && this.tipSelected)
-        return ((this.bill * (this.tipSelected/100))/this.numberPeople).toFixed(2)
+        return ((this.bill * (this.tipSelected / 100)) / this.numberPeople).toFixed(2)
       else
         return '0.00'
 
     },
     total() {
       if (this.bill > 0 && this.numberPeople > 0 && this.tipSelected)
-        return ((this.bill / this.numberPeople) + ((this.bill * (this.tipSelected/100))/this.numberPeople)).toFixed(2)
+        return ((this.bill / this.numberPeople) + ((this.bill * (this.tipSelected / 100)) / this.numberPeople)).toFixed(2)
       else
         return '0.00'
     }
   },
-  methods:{
-   
-    selectTipPercent(percent){
-      window.console.log(percent)
-      window.console.log(this.tipSelected)
-      if(percent == this.tipSelected) return "tip-calculator__tip-percent--selected"
+  methods: {
+    selectTipPercent(percent) {
+      if (percent == this.tipSelected) return "tip-calculator__tip-percent--selected"
     }
   }
 }
@@ -104,11 +99,6 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
-
-body {
-  background-color: hsl(185, 41%, 84%);
-  font-family: "Space Mono";
-}
 
 main {
   text-align: center;
@@ -182,7 +172,7 @@ input {
   font-weight: bold;
 }
 
-.tip-calculator__tip-percent--selected{
+.tip-calculator__tip-percent--selected {
   color: hsl(183, 100%, 15%);
   background-color: hsl(172, 67%, 45%);
 }
