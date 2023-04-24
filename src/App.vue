@@ -20,6 +20,11 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+.v-application{
+  font-family: "Space Mono";
+}
 html {
   height: 100%;
   font-family: "Space Mono";

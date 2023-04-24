@@ -1,9 +1,9 @@
 <template>
-  <img src="../images/logo.svg" alt="Website logo" />
+  <img src="../images/logo.svg" alt="Website logo" class="logo" />
   <div class="tip-calculator">
     <div class="tip-calculator__functional">
       <h1 class="tip-calculator__tittle">Bill</h1>
-      <input class="tip-calculator__input" placeholder="0" v-model="bill" />
+      <input class="tip-calculator__input tip-calculator__input--dollar" placeholder="0" v-model="bill" type="number" />
       <h2 class="tip-calculator__tittle">Select Tip %</h2>
       <div class="tip-calculator__tip-selector">
         <div class="tip-calculator__tip-percent" @click="tipSelected = 5" :class="selectTipPercent(5)">
@@ -26,7 +26,7 @@
         <!-- </div> -->
       </div>
       <h3 class="tip-calculator__tittle">Number of People</h3>
-      <input class="tip-calculator__input" placeholder="0" v-model="numberPeople" />
+      <input class="tip-calculator__input tip-calculator__input--person" placeholder="0" v-model="numberPeople" />
     </div>
     <div class="tip-calculator__visual">
       <div class="tip-calculator__display">
@@ -55,7 +55,11 @@
           ${{ total }}
         </div>
       </div>
-      <button class="tip-calculator__button">
+      <button 
+      class="tip-calculator__button" 
+      @click="reset()"
+      :disabled="total == 0" 
+      :class="total == 0 ? 'tip-calculator__button--disable' : ''">
         Reset
       </button>
     </div>
@@ -92,20 +96,38 @@ export default {
   methods: {
     selectTipPercent(percent) {
       if (percent == this.tipSelected) return "tip-calculator__tip-percent--selected"
+    },
+    reset(){
+      this.bill = ''
+      this.tipSelected = ''
+      this.numberPeople = ''
     }
   }
 }
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 main {
   text-align: center;
-
 }
 
-input {
+.logo {
+  margin-bottom: 2rem;
+}
+
+input,
+button {
   font-family: "Space Mono";
 }
 
@@ -114,15 +136,15 @@ input {
   display: flex;
   padding: 1.5rem;
   border-radius: 1rem;
-  max-width: 40rem;
+  max-width: 45rem;
   background-color: white;
   margin: 0 auto;
   box-sizing: border-box;
+  gap: 1rem;
 }
 
 .tip-calculator__functional {
   width: 50%;
-  padding-right: 1.5rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -144,26 +166,42 @@ input {
 }
 
 .tip-calculator__input {
-  width: 100%;
   border: none;
-  background-color: hsl(189, 41%, 97%);
   outline: none;
   font-size: 20px;
   font-weight: bold;
   padding: 0.5rem;
   text-align: end;
   color: hsl(183, 100%, 15%);
+  background-color: hsl(189, 41%, 97%);
+  border-radius: 0.5rem;
+}
+
+.tip-calculator__input:focus{
+  outline: 2px solid hsl(172, 67%, 45%);;
+}
+
+.tip-calculator__input--dollar {
+  background-image: url(../images/icon-dollar.svg);
+  background-repeat: no-repeat;
+  background-position: 15px 15px;
+}
+
+.tip-calculator__input--person {
+  background-image: url(../images/icon-person.svg);
+  background-repeat: no-repeat;
+  background-position: 15px 15px;
 }
 
 .tip-calculator__tip-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
 }
 
 .tip-calculator__tip-percent {
   text-align: center;
-  width: 5rem;
+  width: 100%;
   color: white;
   background-color: hsl(183, 100%, 15%);
   border-radius: 0.5rem;
@@ -179,7 +217,7 @@ input {
 
 .tip-calculator__tip-value {
   text-align: center;
-  width: 5rem;
+  width: 100%;
   font-weight: bold;
   color: hsl(186, 14%, 43%);
   background-color: hsl(189, 41%, 97%);
@@ -188,6 +226,12 @@ input {
   outline: none;
   border-radius: 0.5rem;
 }
+
+.tip-calculator__tip-value {
+  font-weight: 700;
+  outline: 2px solid hsl(172, 67%, 45%);;
+}
+
 
 .tip-calculator__visual {
   display: flex;
@@ -213,7 +257,7 @@ input {
 }
 
 .tip-calculator__total {
-  font-size: 24px;
+  font-size: 32px;
   font-weight: bold;
   color: hsl(172, 67%, 45%)
 }
@@ -225,6 +269,17 @@ input {
   border-radius: 0.5rem;
   padding: 0.5rem;
   color: hsl(183, 100%, 15%);
-  font-weight: bold;
+  font-weight: 900;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.tip-calculator__button:hover:not(.tip-calculator__button--disable){
+  background-color: hsl(172, 67%, 80%);
+}
+
+
+.tip-calculator__button--disable{
+  background-color: hsla(172, 67%, 45%, 0.397);
 }
 </style>
