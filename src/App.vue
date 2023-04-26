@@ -26,24 +26,15 @@ export default {
   font-family: "Space Mono";
 }
 html {
-  height: 100%;
   font-family: "Space Mono";
+  display: flex;
+  align-items: center;
+  min-height: 100%;
 }
 
 body {
-  height: 100%;
   margin: 0;
   background-color: hsl(185, 41%, 84%);
-  
-}
-
-#app {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
 }
 
 .attribution {

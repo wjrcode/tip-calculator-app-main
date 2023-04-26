@@ -2,31 +2,49 @@
   <img src="../images/logo.svg" alt="Website logo" class="logo" />
   <div class="tip-calculator">
     <div class="tip-calculator__functional">
-      <h1 class="tip-calculator__tittle">Bill</h1>
-      <input class="tip-calculator__input tip-calculator__input--dollar" placeholder="0" v-model="bill" type="number" />
-      <h2 class="tip-calculator__tittle">Select Tip %</h2>
-      <div class="tip-calculator__tip-selector">
-        <div class="tip-calculator__tip-percent" @click="tipSelected = 5" :class="selectTipPercent(5)">
-          5%
+      <div>
+        <div class="tip-calculator__header-input">
+          <h1 class="tip-calculator__tittle">Bill</h1>
+          <div class="tip-calculator__error-message" v-if="bill === 0">Can't be zero</div>
         </div>
-        <div class="tip-calculator__tip-percent" @click="tipSelected = 10" :class="selectTipPercent(10)">
-          10%
-        </div>
-        <div class="tip-calculator__tip-percent" @click="tipSelected = 15" :class="selectTipPercent(15)">
-          15%
-        </div>
-        <div class="tip-calculator__tip-percent" @click="tipSelected = 25" :class="selectTipPercent(25)">
-          25%
-        </div>
-        <div class="tip-calculator__tip-percent" @click="tipSelected = 50" :class="selectTipPercent(50)">
-          50%
-        </div>
-        <!-- <div class="tip-calculator__tip-percent"> -->
-        <input class="tip-calculator__tip-value" placeholder="Custom">
-        <!-- </div> -->
+        <input class="tip-calculator__input tip-calculator__input--dollar"
+          :class="bill === 0 ? 'tip-calculator__input--error' : ''" placeholder="0" v-model="bill" type="number" />
       </div>
-      <h3 class="tip-calculator__tittle">Number of People</h3>
-      <input class="tip-calculator__input tip-calculator__input--person" placeholder="0" v-model="numberPeople" />
+      <div>
+        <div class="tip-calculator__header-input">
+          <h2 class="tip-calculator__tittle">Select Tip %</h2>
+          <div class="tip-calculator__error-message" v-if="tipSelected === 0">Can't be zero</div>
+        </div>
+        <div class="tip-calculator__tip-selector">
+          <div class="tip-calculator__tip-percent" @click="tipSelected = 5" :class="selectTipPercent(5)">
+            5%
+          </div>
+          <div class="tip-calculator__tip-percent" @click="tipSelected = 10" :class="selectTipPercent(10)">
+            10%
+          </div>
+          <div class="tip-calculator__tip-percent" @click="tipSelected = 15" :class="selectTipPercent(15)">
+            15%
+          </div>
+          <div class="tip-calculator__tip-percent" @click="tipSelected = 25" :class="selectTipPercent(25)">
+            25%
+          </div>
+          <div class="tip-calculator__tip-percent" @click="tipSelected = 50" :class="selectTipPercent(50)">
+            50%
+          </div>
+          <!-- <div class="tip-calculator__tip-percent"> -->
+          <input class="tip-calculator__input" placeholder="Custom"
+            :class="tipSelected === 0 ? 'tip-calculator__input--error' : ''" v-model="tipSelected" type="number">
+          <!-- </div> -->
+        </div>
+      </div>
+      <div>
+        <div class="tip-calculator__header-input">
+          <h3 class="tip-calculator__tittle">Number of People</h3>
+          <div class="tip-calculator__error-message" v-if="numberPeople === 0">Can't be zero</div>
+        </div>
+        <input class="tip-calculator__input tip-calculator__input--person"
+          :class="numberPeople === 0 ? 'tip-calculator__input--error' : ''" placeholder="0" v-model="numberPeople"  type="number"/>
+      </div>
     </div>
     <div class="tip-calculator__visual">
       <div class="tip-calculator__display">
@@ -55,11 +73,8 @@
           ${{ total }}
         </div>
       </div>
-      <button 
-      class="tip-calculator__button" 
-      @click="reset()"
-      :disabled="total == 0" 
-      :class="total == 0 ? 'tip-calculator__button--disable' : ''">
+      <button class="tip-calculator__button" @click="reset()" :disabled="total == 0"
+        :class="total == 0 ? 'tip-calculator__button--disable' : ''">
         Reset
       </button>
     </div>
@@ -74,7 +89,7 @@ export default {
   data() {
     return {
       bill: '',
-      tipSelected: 0,
+      tipSelected: '',
       numberPeople: ''
     }
   },
@@ -97,7 +112,7 @@ export default {
     selectTipPercent(percent) {
       if (percent == this.tipSelected) return "tip-calculator__tip-percent--selected"
     },
-    reset(){
+    reset() {
       this.bill = ''
       this.tipSelected = ''
       this.numberPeople = ''
@@ -107,7 +122,6 @@ export default {
 </script>
 
 <style>
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -161,9 +175,20 @@ button {
 
 .tip-calculator__tittle {
   font-size: 16px;
-  margin: 0;
+  margin: 0 0 0.5rem 0;
   color: hsl(186, 14%, 43%);
 }
+
+.tip-calculator__header-input {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tip-calculator__error-message {
+  color: hsl(0, 80%, 70%);
+  font-weight: bold;
+}
+
 
 .tip-calculator__input {
   border: none;
@@ -175,10 +200,17 @@ button {
   color: hsl(183, 100%, 15%);
   background-color: hsl(189, 41%, 97%);
   border-radius: 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.tip-calculator__input:focus{
-  outline: 2px solid hsl(172, 67%, 45%);;
+.tip-calculator__input:focus:not(.tip-calculator__input--error) {
+  outline: 2px solid hsl(172, 67%, 45%);
+}
+
+.tip-calculator__input--error {
+  outline: 2px solid hsl(0, 80%, 70%);
+
 }
 
 .tip-calculator__input--dollar {
@@ -229,7 +261,8 @@ button {
 
 .tip-calculator__tip-value {
   font-weight: 700;
-  outline: 2px solid hsl(172, 67%, 45%);;
+  outline: 2px solid hsl(172, 67%, 45%);
+  ;
 }
 
 
@@ -274,12 +307,50 @@ button {
   text-transform: uppercase;
 }
 
-.tip-calculator__button:hover:not(.tip-calculator__button--disable){
+.tip-calculator__button:hover:not(.tip-calculator__button--disable) {
   background-color: hsl(172, 67%, 80%);
 }
 
 
-.tip-calculator__button--disable{
+.tip-calculator__button--disable {
   background-color: hsla(172, 67%, 45%, 0.397);
 }
+
+@media (max-width: 600px){
+  .logo{
+    margin-top: 2rem;
+  }
+  .tip-calculator{
+    flex-direction: column;
+  }
+  .tip-calculator__functional{
+    width: 100%;
+  }
+
+  .tip-calculator__tip-selector{
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tip-calculator__visual{
+    width: 100%;
+    margin-top: 1rem;
+  }
+
+  .tip-calculator__visual{
+    gap: 2rem;
+  }
+
+  input,button,.tip-calculator__tip-percent{
+    height: 3rem;
+  }
+
+  .tip-calculator__tip-percent{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}
+
+
 </style>
