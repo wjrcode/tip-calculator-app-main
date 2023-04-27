@@ -262,7 +262,6 @@ button {
 .tip-calculator__tip-value {
   font-weight: 700;
   outline: 2px solid hsl(172, 67%, 45%);
-  ;
 }
 
 
